@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Merged</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <h1>Merged</h1>
+  <ul>
+    <%
+        var list = '';
+        for (i = 0; i < 100; i++) {
+          list += '<li><h>' + mergedlist[i] + '</h></li>';
+        }
+      %>
+    <%- list %>
+  </ul>
+</body>
+
+</html>
