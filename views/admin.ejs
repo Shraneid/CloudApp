@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%- query %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <h1><%- title %></h1>
+    <table class="container">
+        <%
+        var table = '';
+
+        let keys = Object.keys(JSON.parse(JSON.stringify(recipeslist[0])));
+
+        if (projection.length == 0){
+          projection = keys;
+        }
+
+        table += '<thead><tr>'
+        for (let t of keys){
+          for (let proj of projection){
+            if (t == proj){
+              table+= '<th>'+ t +'</th>'
+              break;
+            }
+          }
+        }
+        table += '</tr></thead>'
+
+        table += '<tbody>'
+
+        let count = 0;
+        for (let res of recipeslist){
+          table += "<tr>";
+          for (let key of keys){
+            for (let proj of projection){
+              if (key == proj){
+                table+= '<td>'+ res[key] +'</td>'
+                break;
+              }
+            }
+          }
+          table += "</tr>"
+
+          if (count > 100){
+            break;
+          }
+
+          count++;
+        }
+
+        table += '</tbody>'
+      %>
+        <%- table %>
+    </table>
+</body>
+
+</html>

@@ -15,18 +15,24 @@ router.get('/', function (req, res, next) {
         {
             $group: {
                 _id: "$recipe_id",
-                Count: { $sum: 1 }
-
+                Nb_review: { $sum: 1 }
             }
         },
-        { $sort: { Count: -1 } },
+        { $sort: { Nb_review: -1 } },
         { $limit: 1 }
     ];
 
-    collection.aggregate(query, {}, function (e, docs) {
-        res.render('mergedlist', {
-            "mergedlist": docs
-        });
+    var queryPromise = collection.aggregate(query);
+
+    queryPromise.then((value) => {
+        console.log(value);
+        res.render('mergedlist',
+            {
+                "mergedlist": value,
+                title: "La recette du mois !",
+                query: "Query 5",
+                projection: []
+            });
     });
 });
 

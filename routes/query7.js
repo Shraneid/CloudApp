@@ -3,33 +3,62 @@ var router = express.Router();
 
 router.get('/', function (req, res, next) {
     var db = req.db;
-    var collection = db.get('Merged');
+    var collection = db.get('Recipes');
 
-    var query = {
+    let kcal = 100;
+    let glucide = 40;
+    let prot = 20;
+
+    if (req.query.kcal) {
+        kcal = parseInt(req.query.kcal);
+    }
+    if (req.query.glucide) {
+        glucide = parseInt(req.query.glucide);
+    }
+    if (req.query.prot) {
+        prot = parseInt(req.query.prot);
+    }
+
+    console.log(typeof kcal);
+    console.log({ "kcal": kcal, "glucide": glucide, "prot": prot });
+
+    var query =
+    {
         $and: [
             {
-                "nutrition.0":
-                    { $lte: 100 }
+                "nutrition.0":    //kcal
+                    { $lte: kcal }
             },
             {
-                "nutrition.2":
-                    { $lte: 40 }
+                "nutrition.2":   //glucide
+                    { $lte: glucide }
             },
             {
-                "nutrition.4":
-                    { $gte: 20 }
+                "nutrition.4":   //prot
+                    { $gte: prot }
             },
             {
                 "avg_rating":
                     { $gte: 4 }
-            }]
+            }
+        ]
     };
 
-    collection.find(query, {}, function (e, docs) {
-        res.render('mergedlist', {
-            "mergedlist": docs
-        });
+    console.log(JSON.stringify(query));
+
+    var queryPromise = collection.find(query);
+
+    queryPromise.then((value) => {
+        res.render('mergedlist',
+            {
+                "mergedlist": value,
+                title: "Les Recettes “healthy”",
+                query: "Query 7",
+                projection: ["name", "avg_rating", "ingredients", "tags"]
+            });
     });
 });
+
+
 
 module.exports = router;

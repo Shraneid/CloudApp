@@ -7,6 +7,7 @@ var logger = require('morgan');
 //mongodb
 var monk = require('monk');
 var db = monk('localhost:27017/Cloud');
+//var db = monk('devicimongodb184.westeurope.cloudapp.azure.com:27017/Cloud');
 
 var indexRouter = require('./routes/index');
 var query1Router = require('./routes/query1');
@@ -17,7 +18,7 @@ var query5Router = require('./routes/query5');
 var query6Router = require('./routes/query6');
 var query7Router = require('./routes/query7');
 var query8Router = require('./routes/query8');
-var usersRouter = require('./routes/users');
+var adminRouter = require('./routes/admin');
 
 var app = express();
 
@@ -45,7 +46,7 @@ app.use('/query5', query5Router);
 app.use('/query6', query6Router);
 app.use('/query7', query7Router);
 app.use('/query8', query8Router);
-app.use('/users', usersRouter);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
